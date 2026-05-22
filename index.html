@@ -1,0 +1,1228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>나의 애착 유형 테스트 | 당신의 연애 심리를 알아보세요</title>
+  <meta name="description" content="나는 연애할 때 어떤 유형일까? 불안형, 회피형, 안정형, 혼란형 — 24문항으로 나의 애착 유형을 알아보세요." />
+  <meta property="og:title" content="나의 애착 유형 테스트" />
+  <meta property="og:description" content="당신의 연애 심리 유형을 알아보세요. 불안형? 회피형? 안정형?" />
+  <meta property="og:type" content="website" />
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet" />
+
+  <!-- Kakao SDK -->
+  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js"
+    integrity="sha384-TiCUE00h649CAMonG018J2ujOgDKW/kVWlChEuu4jK2vxfAAD0eZxzCKakxg55G4"
+    crossorigin="anonymous"></script>
+
+  <!-- GA4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-HFQCEBY2PW"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-HFQCEBY2PW');
+  </script>
+
+  <style>
+    :root {
+      --bg: #0f0e17;
+      --surface: #1a1829;
+      --surface2: #231f36;
+      --accent: #e8a0bf;
+      --accent2: #a78bfa;
+      --accent3: #fcd34d;
+      --text: #f4f0ff;
+      --text-muted: #9d95b8;
+      --border: rgba(167,139,250,0.15);
+      --radius: 20px;
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: 'Noto Sans KR', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      min-height: 100dvh;
+      overflow-x: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* 배경 오브 */
+    body::before, body::after {
+      content: '';
+      position: fixed;
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::before {
+      top: -20%; left: -10%;
+      width: 60vw; height: 60vw;
+      background: radial-gradient(circle, rgba(167,139,250,0.12) 0%, transparent 70%);
+    }
+    body::after {
+      bottom: -20%; right: -10%;
+      width: 50vw; height: 50vw;
+      background: radial-gradient(circle, rgba(232,160,191,0.1) 0%, transparent 70%);
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* ── 상단 고정 진행률 바 ── */
+    #progress-fixed {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 50;
+      background: rgba(15,14,23,0.92);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      padding-top: var(--safe-top);
+      display: none;
+    }
+    #progress-fixed.show { display: block; }
+    .pf-track {
+      width: 100%;
+      height: 4px;
+      background: var(--surface2);
+    }
+    .pf-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transition: width 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .pf-meta {
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      padding: 9px 20px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* ── INTRO ── */
+    #intro-screen {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: calc(60px + var(--safe-top)) 0 calc(60px + var(--safe-bottom));
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border: 1px solid var(--accent2);
+      border-radius: 100px;
+      font-size: 12px;
+      color: var(--accent2);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 28px;
+    }
+
+    .intro-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(2rem, 8vw, 3rem);
+      font-weight: 700;
+      line-height: 1.25;
+      margin-bottom: 20px;
+    }
+
+    .intro-title .highlight {
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .intro-desc {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 40px;
+    }
+
+    .type-chips {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 44px;
+    }
+
+    .type-chip {
+      padding: 8px 18px;
+      border-radius: 100px;
+      font-size: 13px;
+      font-weight: 500;
+      border: 1px solid transparent;
+    }
+
+    .chip-anxious  { background: rgba(232,160,191,0.12); border-color: rgba(232,160,191,0.3); color: var(--accent); }
+    .chip-avoidant { background: rgba(167,139,250,0.12); border-color: rgba(167,139,250,0.3); color: var(--accent2); }
+    .chip-secure   { background: rgba(252,211,77,0.10); border-color: rgba(252,211,77,0.3); color: var(--accent3); }
+    .chip-fearful  { background: rgba(96,165,250,0.10); border-color: rgba(96,165,250,0.3); color: #60a5fa; }
+
+    .start-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 18px 32px;
+      background: linear-gradient(135deg, var(--accent2), var(--accent));
+      border: none;
+      border-radius: var(--radius);
+      color: white;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: 'Noto Sans KR', sans-serif;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 32px rgba(167,139,250,0.3);
+    }
+
+    .start-btn:active { transform: scale(0.98); }
+
+    .info-row {
+      display: flex;
+      gap: 24px;
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--text-muted);
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* ── QUIZ ── */
+    #quiz-screen {
+      display: none;
+      padding: calc(64px + var(--safe-top)) 0 calc(60px + var(--safe-bottom));
+    }
+
+    .question-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      margin-bottom: 24px;
+      animation: slideUp 0.35s ease;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .question-num {
+      font-size: 11px;
+      color: var(--accent2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .rev-hint {
+      display: none;
+      font-size: 12px;
+      color: var(--accent3);
+      background: rgba(252,211,77,0.1);
+      border: 1px solid rgba(252,211,77,0.25);
+      border-radius: 8px;
+      padding: 7px 12px;
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+    .rev-hint.show { display: block; }
+
+    .question-text {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.05rem, 4vw, 1.25rem);
+      line-height: 1.65;
+      font-weight: 600;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      width: 100%;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      color: var(--text);
+      font-size: 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+      line-height: 1.6;
+      cursor: pointer;
+      text-align: left;
+      transition: border-color 0.18s, background 0.18s, transform 0.1s;
+    }
+
+    .option-btn:active { transform: scale(0.99); }
+
+    .option-btn.selected {
+      border-color: var(--accent2);
+      background: rgba(167,139,250,0.18);
+    }
+
+    .option-letter {
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent2);
+      margin-top: 1px;
+    }
+
+    .option-btn.selected .option-letter {
+      background: var(--accent2);
+      border-color: var(--accent2);
+      color: white;
+    }
+
+    .nav-row {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .nav-btn {
+      padding: 13px 30px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, opacity 0.2s;
+    }
+
+    .nav-btn:disabled { opacity: 0; pointer-events: none; }
+
+    /* ── RESULT ── */
+    #result-screen {
+      display: none;
+      padding: calc(40px + var(--safe-top)) 0 calc(80px + var(--safe-bottom));
+    }
+
+    .result-header { text-align: center; margin-bottom: 36px; }
+
+    .result-emoji {
+      font-size: 64px;
+      margin-bottom: 16px;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-10px); }
+    }
+
+    .result-type-badge {
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 100px;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      margin-bottom: 14px;
+    }
+
+    .result-title {
+      font-family: 'Noto Serif KR', serif;
+      font-size: clamp(1.6rem, 7vw, 2.2rem);
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .result-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .result-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      margin-bottom: 16px;
+    }
+
+    .result-card-title {
+      font-size: 11px;
+      color: var(--accent2);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+
+    .result-card p {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--text-muted);
+    }
+
+    .result-card p strong { color: var(--text); }
+
+    .score-bars { display: flex; flex-direction: column; gap: 14px; }
+
+    .score-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
+
+    .score-label span:last-child { color: var(--text); font-weight: 600; }
+
+    .score-track {
+      height: 8px;
+      background: var(--surface2);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .score-fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 1s cubic-bezier(.4,0,.2,1) 0.3s;
+    }
+
+    .tip-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+
+    .tip-list li {
+      display: flex;
+      gap: 10px;
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--text-muted);
+    }
+
+    .tip-list li::before {
+      content: '→';
+      color: var(--accent2);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .share-section { text-align: center; margin-top: 36px; }
+
+    .share-title {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+    }
+
+    .share-btns {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .share-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 20px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-size: 13px;
+      font-family: 'Noto Sans KR', sans-serif;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .share-btn:active { transform: scale(0.98); }
+
+    .kakao-btn { background: #FEE500; border-color: #FEE500; color: #3C1E1E; }
+    .save-btn { background: rgba(167,139,250,0.14); border-color: rgba(167,139,250,0.4); color: var(--text); }
+
+    .retry-btn {
+      margin-top: 28px;
+      width: 100%;
+      padding: 15px;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 14px;
+      font-family: 'Noto Sans KR', sans-serif;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    /* 로딩 */
+    #loading-screen {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: var(--bg);
+      z-index: 100;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .loading-dots { display: flex; gap: 8px; }
+
+    .loading-dots span {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--accent2);
+      animation: pulse 1.2s ease-in-out infinite;
+    }
+
+    .loading-dots span:nth-child(2) { animation-delay: 0.2s; background: var(--accent); }
+    .loading-dots span:nth-child(3) { animation-delay: 0.4s; background: var(--accent3); }
+
+    @keyframes pulse {
+      0%, 80%, 100% { transform: scale(0.7); opacity: 0.4; }
+      40% { transform: scale(1); opacity: 1; }
+    }
+
+    .loading-text { font-size: 14px; color: var(--text-muted); }
+
+    /* hover 효과는 실제 포인터가 있는 기기에서만 */
+    @media (hover: hover) {
+      .start-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(167,139,250,0.45); }
+      .option-btn:hover { border-color: var(--accent2); background: rgba(167,139,250,0.08); }
+      .nav-btn:hover:not(:disabled) { border-color: var(--text-muted); color: var(--text); }
+      .share-btn:hover { border-color: var(--accent2); }
+      .kakao-btn:hover { background: #FFD700; border-color: #FFD700; }
+      .retry-btn:hover { border-color: var(--text-muted); color: var(--text); }
+    }
+
+    @media (max-width: 480px) {
+      .question-card { padding: 24px 20px; }
+      .result-card { padding: 22px 18px; }
+      .container { padding: 0 16px; }
+      .info-row { gap: 16px; }
+      .share-btn { padding: 11px 16px; }
+    }
+
+    @media (min-width: 768px) {
+      .intro-desc { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── 상단 고정 진행률 바 ── -->
+<div id="progress-fixed">
+  <div class="pf-track"><div class="pf-fill" id="progress-fill"></div></div>
+  <div class="pf-meta">
+    <span id="q-counter">1 / 24</span>
+    <span id="q-percent">0%</span>
+  </div>
+</div>
+
+<!-- ── 인트로 ── -->
+<div id="intro-screen">
+  <div class="container">
+    <div class="badge">✦ Attachment Style Test</div>
+    <h1 class="intro-title">
+      나의 <span class="highlight">애착 유형</span>은<br />무엇일까?
+    </h1>
+    <p class="intro-desc">
+      연애할 때 불안하고 집착하는 편인가요?<br />
+      아니면 거리를 두고 싶어지나요?<br />
+      24가지 질문으로 나의 진짜 애착 심리를 알아보세요.
+    </p>
+    <div class="type-chips">
+      <span class="type-chip chip-anxious">💗 불안 애착형</span>
+      <span class="type-chip chip-avoidant">🧊 회피 애착형</span>
+      <span class="type-chip chip-secure">☀️ 안정 애착형</span>
+      <span class="type-chip chip-fearful">🌀 혼란 애착형</span>
+    </div>
+    <button class="start-btn" onclick="startQuiz()">테스트 시작하기 →</button>
+    <div class="info-row">
+      <span>📋 24문항</span>
+      <span>⏱️ 약 4분</span>
+      <span>🔒 무료</span>
+    </div>
+  </div>
+</div>
+
+<!-- ── 로딩 ── -->
+<div id="loading-screen">
+  <div class="loading-dots"><span></span><span></span><span></span></div>
+  <p class="loading-text">결과를 분석하는 중...</p>
+</div>
+
+<!-- ── 퀴즈 ── -->
+<div id="quiz-screen">
+  <div class="container">
+    <div class="question-card" id="question-card">
+      <p class="question-num" id="question-num">Q 01</p>
+      <p class="rev-hint" id="rev-hint">✱ 이 문항은 <strong>당신과 가장 거리가 먼</strong> 보기를 골라주세요.</p>
+      <p class="question-text" id="question-text"></p>
+    </div>
+
+    <div class="options-list" id="options-list"></div>
+
+    <div class="nav-row">
+      <button class="nav-btn" id="prev-btn" onclick="prevQuestion()" disabled>← 이전 문항</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── 결과 ── -->
+<div id="result-screen">
+  <div class="container">
+    <div class="result-header">
+      <div class="result-emoji" id="result-emoji">💗</div>
+      <div class="result-type-badge" id="result-badge">불안 애착형</div>
+      <h2 class="result-title" id="result-title">결과 제목</h2>
+      <p class="result-subtitle" id="result-subtitle">부제목</p>
+    </div>
+
+    <div class="result-card">
+      <p class="result-card-title">📊 나의 애착 유형 분포</p>
+      <div class="score-bars" id="score-bars"></div>
+    </div>
+
+    <div class="result-card">
+      <p class="result-card-title">🔍 상세 분석</p>
+      <p id="result-desc"></p>
+    </div>
+
+    <div class="result-card">
+      <p class="result-card-title">💬 연애 패턴</p>
+      <p id="result-pattern"></p>
+    </div>
+
+    <div class="result-card">
+      <p class="result-card-title">✨ 더 건강한 관계를 위한 팁</p>
+      <ul class="tip-list" id="result-tips"></ul>
+    </div>
+
+    <div class="share-section">
+      <p class="share-title">친구에게 공유하고 유형 비교해보기</p>
+      <div class="share-btns">
+        <button class="share-btn kakao-btn" onclick="shareKakao()">
+          <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" width="18" height="18" alt="kakao" />
+          카카오톡
+        </button>
+        <button class="share-btn save-btn" onclick="saveResultImage()">📷 이미지 저장</button>
+        <button class="share-btn" onclick="copyLink()">🔗 링크 복사</button>
+        <button class="share-btn" onclick="shareTwitter()">𝕏 공유</button>
+      </div>
+      <button class="retry-btn" onclick="retryQuiz()">↺ 다시 테스트하기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── 문항 데이터 ──
+// 각 선택지 type: A=불안 / V=회피 / S=안정 / F=혼란
+// reverse:true → "가장 거리가 먼" 보기를 고르는 역채점 문항
+const questions = [
+  { text: "연인에게서 답장이 평소보다 늦어질 때, 머릿속에 가장 먼저 드는 생각은?", options: [
+    { text: "각자 하루가 있으니까, 일 보고 연락하겠지", type: "S" },
+    { text: "내가 뭘 잘못했나? 마지막 대화를 다시 읽어본다", type: "A" },
+    { text: "딱히 신경 쓰이지 않는다. 나도 내 할 일을 한다", type: "V" },
+    { text: "별일 없겠지 싶다가도, 갑자기 불안이 훅 올라온다", type: "F" },
+  ]},
+  { text: "연인이 \"우리 얘기 좀 하자\"라고 말했을 때 내 반응은?", options: [
+    { text: "무슨 일이지? 안 좋은 얘기일까 봐 심장이 먼저 뛴다", type: "A" },
+    { text: "굳이 길게 얘기할 일인가 싶어 조금 피곤하다", type: "V" },
+    { text: "무슨 얘기든 들어볼 준비가 된다", type: "S" },
+    { text: "듣고 싶으면서도, 동시에 도망치고 싶어진다", type: "F" },
+  ]},
+  { text: "새로 만난 사람에게 호감이 생겼을 때 나는?", options: [
+    { text: "좋긴 한데, 너무 빠지진 않으려고 한발 물러선다", type: "V" },
+    { text: "이 사람도 날 좋아할까? 신호를 계속 분석한다", type: "A" },
+    { text: "설레는 마음을 즐기면서 천천히 알아간다", type: "S" },
+    { text: "다가가고 싶은데, 또 상처받을까 봐 망설여진다", type: "F" },
+  ]},
+  { reverse: true, text: "다음 중 평소의 나와 가장 거리가 먼 모습은?", options: [
+    { text: "연인의 작은 말투 변화도 놓치지 않고 신경 쓴다", type: "A" },
+    { text: "혼자 있는 시간이 관계만큼이나 소중하다", type: "V" },
+    { text: "갈등이 생겨도 결국 대화로 풀 수 있다고 믿는다", type: "S" },
+    { text: "가까워질수록 마음이 더 복잡해진다", type: "F" },
+  ]},
+  { text: "연인과 다툰 그날 밤, 나는 보통...", options: [
+    { text: "먼저 연락해서라도 오늘 안에 풀어야 마음이 놓인다", type: "A" },
+    { text: "감정이 가라앉길 기다렸다가 차분히 다시 얘기한다", type: "S" },
+    { text: "화해하고 싶은데 말을 어떻게 꺼낼지 몰라 시간만 흐른다", type: "F" },
+    { text: "굳이 들쑤시지 않고, 자연스럽게 넘어가길 기다린다", type: "V" },
+  ]},
+  { text: "연인이 친구들과 며칠 여행을 간다고 할 때?", options: [
+    { text: "잘 다녀오라 하고 나도 내 시간을 보낸다", type: "S" },
+    { text: "괜찮다고 했지만 속으론 자꾸 신경이 쓰인다", type: "F" },
+    { text: "누구랑 가는지, 며칠인지 자세히 알고 싶어진다", type: "A" },
+    { text: "오히려 나도 자유 시간이 생겨 반갑다", type: "V" },
+  ]},
+  { text: "연인이 갑자기 \"사랑해\"라고 말했을 때?", options: [
+    { text: "고맙긴 한데 어떻게 반응할지 몰라 살짝 어색하다", type: "V" },
+    { text: "나도 자연스럽게 마음을 표현한다", type: "S" },
+    { text: "기쁘면서도 '진심일까?' 한 번 더 확인하고 싶다", type: "A" },
+    { text: "행복한데 동시에 '이게 얼마나 갈까' 싶어진다", type: "F" },
+  ]},
+  { text: "연애가 유난히 잘 풀릴 때, 문득 드는 생각은?", options: [
+    { text: "너무 좋아서 오히려 불안하다. 곧 깨질 것만 같다", type: "F" },
+    { text: "이 사람을 놓치지 않으려면 더 잘해야겠다", type: "A" },
+    { text: "지금 이 안정감이 참 좋다", type: "S" },
+    { text: "좋긴 한데, 내 페이스는 잃지 않으려 한다", type: "V" },
+  ]},
+  { text: "연인이 며칠째 기분이 가라앉아 있을 때?", options: [
+    { text: "혹시 나 때문인가 싶어 계속 마음이 쓰인다", type: "A" },
+    { text: "알아서 풀리겠지, 굳이 깊게 묻지 않는다", type: "V" },
+    { text: "무슨 일 있냐고 물어보고 곁에 있어 준다", type: "S" },
+    { text: "도와주고 싶은데 다가가기가 조심스럽다", type: "F" },
+  ]},
+  { text: "데이트 약속을 잡을 때 나는?", options: [
+    { text: "너무 자주 만나는 건 부담스러워 간격을 둔다", type: "V" },
+    { text: "서로 일정을 맞춰 적당한 빈도로 만난다", type: "S" },
+    { text: "가능한 한 자주 보고 싶어 먼저 제안한다", type: "A" },
+    { text: "보고 싶은데 막상 약속이 잡히면 긴장된다", type: "F" },
+  ]},
+  { text: "내 약한 모습이나 깊은 고민을 연인에게 보일 때?", options: [
+    { text: "솔직하게 털어놓는 편이고 그게 편하다", type: "S" },
+    { text: "웬만하면 혼자 해결하지, 잘 꺼내지 않는다", type: "V" },
+    { text: "말하고 싶다가도 부담 줄까 봐 삼킨다", type: "F" },
+    { text: "털어놓으면서도 상대 반응을 자꾸 살피게 된다", type: "A" },
+  ]},
+  { reverse: true, text: "다음 중 나와 가장 안 어울리는 연애 방식은?", options: [
+    { text: "적당한 거리를 두고 각자의 삶을 지킨다", type: "V" },
+    { text: "늘 붙어 있고 거의 모든 것을 공유한다", type: "A" },
+    { text: "솔직하게 말하고, 솔직하게 듣는다", type: "S" },
+    { text: "다가갔다 멀어졌다를 반복한다", type: "F" },
+  ]},
+  { text: "연인이 \"요즘 좀 바빠서 연락 자주 못 했네\"라고 할 때?", options: [
+    { text: "그럴 수 있지, 이해한다고 답한다", type: "S" },
+    { text: "이해한다고 말하면서도 서운함이 남는다", type: "A" },
+    { text: "괜찮다고 했지만 마음이 어수선하다", type: "F" },
+    { text: "사실 나도 편했어서 별 타격이 없다", type: "V" },
+  ]},
+  { text: "관계에서 내가 가장 견디기 힘든 순간은?", options: [
+    { text: "상대의 마음이 식은 것 같다고 느껴질 때", type: "A" },
+    { text: "내 시간과 공간이 자꾸 침범당할 때", type: "V" },
+    { text: "가까워질수록 옛 상처가 떠오를 때", type: "F" },
+    { text: "서로 솔직하지 못해 대화가 막힐 때", type: "S" },
+  ]},
+  { text: "연인이 내 일상이나 SNS를 궁금해할 때?", options: [
+    { text: "관심받는 것 같아 기분이 좋다", type: "A" },
+    { text: "어느 정도는 내 영역으로 남겨두고 싶다", type: "V" },
+    { text: "자연스럽게 공유하고 그의 일상도 궁금하다", type: "S" },
+    { text: "관심은 좋은데 다 보여주긴 망설여진다", type: "F" },
+  ]},
+  { reverse: true, text: "다음 중 내 모습과 가장 다른 것은?", options: [
+    { text: "연인이 멀게 느껴져도 크게 흔들리지 않는다", type: "S" },
+    { text: "사랑받고 있다는 확인이 자주 필요하다", type: "A" },
+    { text: "감정을 말로 꺼내는 게 영 익숙하지 않다", type: "V" },
+    { text: "내 마음인데도 나조차 종잡기 어렵다", type: "F" },
+  ]},
+  { text: "연인과 헤어진 직후의 나는 보통...", options: [
+    { text: "공허함이 크고, 다음 연애마저 두려워진다", type: "F" },
+    { text: "다시 잘될 수 있을까, 미련이 오래 남는다", type: "A" },
+    { text: "생각보다 빨리 일상으로 돌아온다", type: "V" },
+    { text: "아프지만 시간이 지나며 잘 추스른다", type: "S" },
+  ]},
+  { text: "연인이 나에게 \"서운하다\"고 말할 때?", options: [
+    { text: "어떤 점이었는지 듣고 같이 풀어간다", type: "S" },
+    { text: "미안하면서도 나도 모르게 방어적으로 굳는다", type: "F" },
+    { text: "내가 또 부족했나 싶어 자책이 앞선다", type: "A" },
+    { text: "그 정도로 서운할 일인가 싶기도 하다", type: "V" },
+  ]},
+  { text: "'이상적인 연애'를 떠올리면 어떤 모습인가요?", options: [
+    { text: "서로가 1순위이고 매일 마음을 확인하는 사이", type: "A" },
+    { text: "각자 단단하면서 함께 더 단단해지는 사이", type: "S" },
+    { text: "충분한 자유 위에 느슨하게 이어지는 사이", type: "V" },
+    { text: "깊이 연결되지만 상처는 없는, 안전한 사이", type: "F" },
+  ]},
+  { text: "연인이 내 부탁을 한 번 거절했을 때?", options: [
+    { text: "그럴 수도 있지, 별생각 없이 넘긴다", type: "V" },
+    { text: "나를 덜 위하는 건가 싶어 마음이 쓰인다", type: "A" },
+    { text: "이유를 묻고, 그럴 만했는지 같이 살펴본다", type: "S" },
+    { text: "괜찮은 척하지만 속으로 오래 곱씹는다", type: "F" },
+  ]},
+  { text: "연인과 미래(여행·동거·결혼 등)를 이야기할 때?", options: [
+    { text: "설레는 마음으로 구체적으로 그려본다", type: "S" },
+    { text: "너무 먼 약속은 아직 부담스럽다", type: "V" },
+    { text: "함께하고 싶은데 막연한 두려움이 올라온다", type: "F" },
+    { text: "확실한 약속을 받아야 비로소 안심이 된다", type: "A" },
+  ]},
+  { text: "연인이 나 없이도 충분히 행복해 보일 때?", options: [
+    { text: "내가 없어도 괜찮은 건가 싶어 서운하다", type: "A" },
+    { text: "각자 행복한 게 건강한 거라고 생각한다", type: "S" },
+    { text: "당연한 거고, 오히려 내 마음이 편하다", type: "V" },
+    { text: "다행이다 싶다가도 묘하게 불안해진다", type: "F" },
+  ]},
+  { text: "내 감정을 연인에게 전할 때 나는...", options: [
+    { text: "표현하려다 말이 엉켜 결국 못 할 때가 많다", type: "F" },
+    { text: "때를 봐서 솔직하고 분명하게 말한다", type: "S" },
+    { text: "바로바로 말하고 상대의 반응을 확인한다", type: "A" },
+    { text: "어지간하면 말하지 않고 속으로 정리한다", type: "V" },
+  ]},
+  { text: "지금 나에게 '연애'란 어떤 의미인가요?", options: [
+    { text: "나를 더 좋은 사람으로 만들어 주는 것", type: "S" },
+    { text: "원하지만 늘 마음 한구석이 불안한 것", type: "A" },
+    { text: "좋지만 굳이 매달리고 싶진 않은 것", type: "V" },
+    { text: "간절하면서도 선뜻 시작하기는 두려운 것", type: "F" },
+  ]},
+];
+
+// ── 결과 데이터 ──
+const results = {
+  A: {
+    emoji: "💗",
+    type: "불안 애착형",
+    badge: { text: "💗 불안 애착형", color: "#e8a0bf", bg: "rgba(232,160,191,0.15)" },
+    title: "사랑에 목마른 당신",
+    subtitle: "연애할 때 확인하고 싶고, 불안하고, 매달리는 경향이 있어요.",
+    desc: "당신은 <strong>불안 애착형</strong>입니다. 어린 시절 양육자의 반응이 일관적이지 않았던 경험에서 비롯된 경우가 많아요. 연인에게 깊이 몰입하며 사랑받고 싶은 욕구가 강하지만, 그만큼 거절이나 이별에 대한 두려움도 큽니다. 상대의 반응에 민감하게 반응하고, 확인 행동이나 집착으로 이어질 수 있어요.",
+    pattern: "연인에게 자주 연락하고 빠른 답장을 기대합니다. 상대가 조금만 멀게 느껴져도 '나한테 실망한 걸까?' 생각하기 쉽고, 연인의 감정 상태에 따라 나의 기분도 크게 흔들려요. 싸운 후 빨리 화해하고 싶어 먼저 손을 내밀지만, 근본적인 불안은 해소되지 않기도 합니다.",
+    tips: [
+      "상대의 반응 없이도 괜찮은 나를 만들기 — 혼자 할 수 있는 취미나 목표를 갖기",
+      "불안할 때 바로 연락하는 대신, 감정을 일기로 적어보기",
+      "\"나는 충분히 사랑받을 자격이 있다\"는 자기 확신 훈련하기",
+      "파트너에게 필요한 것을 집착이 아닌 명확한 대화로 요청하기",
+    ]
+  },
+  V: {
+    emoji: "🧊",
+    type: "회피 애착형",
+    badge: { text: "🧊 회피 애착형", color: "#a78bfa", bg: "rgba(167,139,250,0.15)" },
+    title: "혼자가 편한 당신",
+    subtitle: "가까워지는 게 불편하고, 독립성이 무엇보다 중요한 유형이에요.",
+    desc: "당신은 <strong>회피 애착형</strong>입니다. 감정적 친밀감이 부담스럽게 느껴지고, 관계가 깊어질수록 본능적으로 거리를 두게 됩니다. '나는 혼자서도 충분해'라는 강한 독립심을 가지고 있지만, 내면 깊은 곳에서는 진짜 연결을 원할 수도 있어요. 감정 표현이 서툴고 상대방이 이를 냉담함으로 오해하기도 합니다.",
+    pattern: "연인이 너무 자주 연락하면 숨이 막히는 느낌이 들어요. 감정을 표현하는 대신 상황을 이성적으로 처리하려 하고, 다툼 후에는 혼자 정리 시간이 필요합니다. 상대방의 의존이나 감정적 요구에 부담을 느끼고, 관계에 '과부하'가 걸리면 차단하거나 잠수를 타기도 해요.",
+    tips: [
+      "상대방의 애정 표현이 '통제'가 아닌 '관심'이라는 것 인식하기",
+      "감정을 느꼈을 때 작은 것부터 솔직하게 말하는 연습하기",
+      "혼자 시간이 필요할 때 '잠수' 대신 '나 잠깐 혼자 있을게'라고 말하기",
+      "완벽히 이해받지 않아도 괜찮다는 것 — 취약함을 보여도 괜찮아요",
+    ]
+  },
+  S: {
+    emoji: "☀️",
+    type: "안정 애착형",
+    badge: { text: "☀️ 안정 애착형", color: "#fcd34d", bg: "rgba(252,211,77,0.12)" },
+    title: "사랑을 편안하게 나누는 당신",
+    subtitle: "건강한 관계를 만드는 법을 잘 알고 있는 유형이에요.",
+    desc: "당신은 <strong>안정 애착형</strong>입니다. 자신과 타인 모두를 긍정적으로 바라보며, 관계에서 신뢰와 소통을 자연스럽게 실천해요. 연인에게 의존하면서도 독립성을 유지할 수 있는 균형 감각이 있고, 갈등이 생겨도 차분하게 해결하려 합니다. 가장 건강한 애착 유형으로, 상대방에게도 안정감을 줄 수 있어요.",
+    pattern: "다툼 후에 감정이 진정되면 먼저 대화를 시도하는 편이에요. 상대가 연락이 없어도 '바쁜가 보다' 여유롭게 생각하고, 연인의 개인적인 공간도 존중합니다. 자신의 감정을 솔직하게 표현하되, 상대방의 감정도 충분히 경청해요.",
+    tips: [
+      "지금처럼 건강한 패턴을 유지하며 파트너도 성장할 수 있도록 지지해주기",
+      "다른 유형의 파트너를 만났을 때 그 불안이나 회피가 '나쁜 것'이 아님을 이해하기",
+      "가끔은 나의 감정과 필요를 더 명확하게 표현하는 연습도 좋아요",
+      "안정 애착이어도 관계는 지속적인 노력이 필요하다는 것 잊지 않기",
+    ]
+  },
+  F: {
+    emoji: "🌀",
+    type: "혼란 애착형",
+    badge: { text: "🌀 혼란 애착형", color: "#60a5fa", bg: "rgba(96,165,250,0.12)" },
+    title: "가까워지고 싶지만 두려운 당신",
+    subtitle: "사랑을 원하면서도 상처가 두려워 혼란스러운 유형이에요.",
+    desc: "당신은 <strong>혼란(공포회피) 애착형</strong>입니다. 친밀감을 원하면서도 동시에 두려워하는 복잡한 내면을 가지고 있어요. 어린 시절 양육자로부터 위로와 두려움을 동시에 경험한 경우가 많습니다. 관계에 대한 갈망과 두려움이 공존해 행동이 일관되지 않게 느껴질 수 있어요.",
+    pattern: "가까워지고 싶다가도 갑자기 밀어내는 행동이 반복될 수 있어요. 상대방의 애정에 감동받으면서도 '이게 언제까지 갈까' 불안해지고, 다툼 후 화해하고 싶지만 어떻게 해야 할지 몰라 오히려 더 멀어지기도 합니다. 감정의 기복이 크고 스스로도 나의 반응을 이해하기 어려울 때가 있어요.",
+    tips: [
+      "전문 상담사와 함께 과거 관계 패턴을 탐색해보는 것이 도움이 돼요",
+      "\"지금 이 순간\" 상대방이 나를 해치려는 게 아님을 스스로 확인하는 연습하기",
+      "나의 혼란스러운 반응이 '잘못된 것'이 아닌 '배운 것'임을 인정하기",
+      "신뢰할 수 있는 안전한 사람과 작은 취약함부터 나눠보기",
+    ]
+  }
+};
+
+// ── 상태 ──
+const POINTS_PER_Q = 3;
+const totalPoints = questions.length * POINTS_PER_Q;
+let currentQ = 0;
+let answers = new Array(questions.length).fill(null);
+let autoTimer = null;
+let lastDominant = null;
+let lastScore = null;
+
+function startQuiz() {
+  gtag('event', 'quiz_start', { event_category: 'attachment_test' });
+  document.getElementById('intro-screen').style.display = 'none';
+  document.getElementById('quiz-screen').style.display = 'block';
+  document.getElementById('progress-fixed').classList.add('show');
+  currentQ = 0;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  clearTimeout(autoTimer);
+  const q = questions[currentQ];
+  const total = questions.length;
+
+  document.getElementById('q-counter').textContent = `${currentQ + 1} / ${total}`;
+  document.getElementById('q-percent').textContent = `${Math.round((currentQ / total) * 100)}%`;
+  document.getElementById('progress-fill').style.width = `${(currentQ / total) * 100}%`;
+  document.getElementById('question-num').textContent = `Q ${String(currentQ + 1).padStart(2, '0')}`;
+  document.getElementById('question-text').textContent = q.text;
+  document.getElementById('rev-hint').classList.toggle('show', !!q.reverse);
+
+  const card = document.getElementById('question-card');
+  card.style.animation = 'none';
+  void card.offsetWidth;
+  card.style.animation = 'slideUp 0.35s ease';
+
+  const optionsEl = document.getElementById('options-list');
+  optionsEl.innerHTML = '';
+  const letters = ['A', 'B', 'C', 'D'];
+  q.options.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'option-btn' + (answers[currentQ] === i ? ' selected' : '');
+    const letterSpan = document.createElement('span');
+    letterSpan.className = 'option-letter';
+    letterSpan.textContent = letters[i];
+    const textSpan = document.createElement('span');
+    textSpan.textContent = opt.text;
+    btn.appendChild(letterSpan);
+    btn.appendChild(textSpan);
+    btn.onclick = () => selectOption(i);
+    optionsEl.appendChild(btn);
+  });
+
+  document.getElementById('prev-btn').disabled = currentQ === 0;
+  window.scrollTo({ top: 0, behavior: 'instant' in document.documentElement.style ? 'instant' : 'auto' });
+}
+
+function selectOption(idx) {
+  answers[currentQ] = idx;
+  document.querySelectorAll('.option-btn').forEach((btn, i) => {
+    btn.classList.toggle('selected', i === idx);
+  });
+  // 0.4초 후 자동으로 다음 문항(마지막이면 결과)
+  clearTimeout(autoTimer);
+  autoTimer = setTimeout(() => {
+    if (currentQ < questions.length - 1) {
+      currentQ++;
+      renderQuestion();
+    } else {
+      finishQuiz();
+    }
+  }, 400);
+}
+
+function prevQuestion() {
+  clearTimeout(autoTimer);
+  if (currentQ > 0) { currentQ--; renderQuestion(); }
+}
+
+function finishQuiz() {
+  clearTimeout(autoTimer);
+  document.getElementById('quiz-screen').style.display = 'none';
+  document.getElementById('progress-fixed').classList.remove('show');
+  document.getElementById('loading-screen').style.display = 'flex';
+  setTimeout(showResult, 1600);
+}
+
+function computeScore() {
+  const score = { A: 0, V: 0, S: 0, F: 0 };
+  questions.forEach((q, i) => {
+    if (answers[i] === null) return;
+    const chosen = q.options[answers[i]].type;
+    if (q.reverse) {
+      // "가장 거리가 먼" 보기 → 선택한 유형 외 나머지 3개 유형에 +1 (역채점)
+      ['A', 'V', 'S', 'F'].forEach(t => { if (t !== chosen) score[t] += 1; });
+    } else {
+      score[chosen] += POINTS_PER_Q;
+    }
+  });
+  return score;
+}
+
+function showResult() {
+  document.getElementById('loading-screen').style.display = 'none';
+
+  const score = computeScore();
+  const dominant = ['A', 'V', 'S', 'F'].reduce((a, b) => score[a] >= score[b] ? a : b);
+  const r = results[dominant];
+  lastDominant = dominant;
+  lastScore = score;
+
+  document.getElementById('result-emoji').textContent = r.emoji;
+  document.getElementById('result-title').textContent = r.title;
+  document.getElementById('result-subtitle').textContent = r.subtitle;
+
+  const badge = document.getElementById('result-badge');
+  badge.textContent = r.badge.text;
+  badge.style.cssText = `background:${r.badge.bg};color:${r.badge.color};border:1px solid ${r.badge.color}40;border-radius:100px;font-size:12px;font-weight:700;letter-spacing:.1em;padding:6px 20px;display:inline-block;`;
+
+  const barColors = { A: '#e8a0bf', V: '#a78bfa', S: '#fcd34d', F: '#60a5fa' };
+  const barLabels = { A: '💗 불안 애착', V: '🧊 회피 애착', S: '☀️ 안정 애착', F: '🌀 혼란 애착' };
+  const barsEl = document.getElementById('score-bars');
+  barsEl.innerHTML = '';
+  ['S', 'A', 'V', 'F'].forEach(t => {
+    const pct = Math.round((score[t] / totalPoints) * 100);
+    barsEl.innerHTML += `
+      <div class="score-row">
+        <div class="score-label"><span>${barLabels[t]}</span><span>${pct}%</span></div>
+        <div class="score-track">
+          <div class="score-fill" style="width:0%;background:${barColors[t]}" data-w="${pct}%"></div>
+        </div>
+      </div>`;
+  });
+
+  document.getElementById('result-desc').innerHTML = r.desc;
+  document.getElementById('result-pattern').innerHTML = r.pattern;
+  document.getElementById('result-tips').innerHTML = r.tips.map(t => `<li>${t}</li>`).join('');
+
+  document.getElementById('result-screen').style.display = 'block';
+  window.scrollTo(0, 0);
+
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      document.querySelectorAll('.score-fill').forEach(el => { el.style.width = el.dataset.w; });
+    });
+  });
+
+  gtag('event', 'quiz_complete', {
+    event_category: 'attachment_test',
+    event_label: dominant,
+    value: score[dominant]
+  });
+
+  const url = new URL(window.location);
+  url.searchParams.set('result', dominant);
+  history.pushState({}, '', url);
+}
+
+function retryQuiz() {
+  clearTimeout(autoTimer);
+  currentQ = 0;
+  answers = new Array(questions.length).fill(null);
+  lastDominant = null;
+  lastScore = null;
+  document.getElementById('result-screen').style.display = 'none';
+  document.getElementById('progress-fixed').classList.remove('show');
+  document.getElementById('intro-screen').style.display = '';
+  const url = new URL(window.location);
+  url.searchParams.delete('result');
+  history.pushState({}, '', url);
+  window.scrollTo(0, 0);
+}
+
+// ── 결과 이미지 저장 (canvas 결과카드 생성 후 다운로드) ──
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + w, y, x + w, y + h, r);
+  ctx.arcTo(x + w, y + h, x, y + h, r);
+  ctx.arcTo(x, y + h, x, y, r);
+  ctx.arcTo(x, y, x + w, y, r);
+  ctx.closePath();
+}
+
+function wrapText(ctx, text, cx, y, maxW, lh) {
+  const words = text.split(' ');
+  let line = '';
+  const lines = [];
+  words.forEach(w => {
+    const test = line ? line + ' ' + w : w;
+    if (ctx.measureText(test).width > maxW && line) { lines.push(line); line = w; }
+    else line = test;
+  });
+  if (line) lines.push(line);
+  lines.forEach((ln, i) => ctx.fillText(ln, cx, y + i * lh));
+  return lines.length;
+}
+
+async function saveResultImage() {
+  if (!lastDominant || !lastScore) return;
+  const r = results[lastDominant];
+  const W = 1080, H = 1350;
+  const cv = document.createElement('canvas');
+  cv.width = W; cv.height = H;
+  const ctx = cv.getContext('2d');
+  try { await document.fonts.ready; } catch (e) {}
+
+  // 배경
+  ctx.fillStyle = '#0f0e17';
+  ctx.fillRect(0, 0, W, H);
+  let g = ctx.createRadialGradient(W * 0.15, H * 0.08, 0, W * 0.15, H * 0.08, W * 0.7);
+  g.addColorStop(0, 'rgba(167,139,250,0.20)'); g.addColorStop(1, 'rgba(167,139,250,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  g = ctx.createRadialGradient(W * 0.9, H * 0.97, 0, W * 0.9, H * 0.97, W * 0.7);
+  g.addColorStop(0, 'rgba(232,160,191,0.16)'); g.addColorStop(1, 'rgba(232,160,191,0)');
+  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+
+  // 테두리
+  ctx.strokeStyle = 'rgba(167,139,250,0.25)';
+  ctx.lineWidth = 2;
+  roundRect(ctx, 30, 30, W - 60, H - 60, 36);
+  ctx.stroke();
+
+  ctx.textAlign = 'center';
+
+  ctx.fillStyle = '#9d95b8';
+  ctx.font = "500 26px 'Noto Sans KR', sans-serif";
+  ctx.fillText('A T T A C H M E N T   S T Y L E   T E S T', W / 2, 140);
+
+  ctx.font = "150px sans-serif";
+  ctx.fillText(r.emoji, W / 2, 330);
+
+  ctx.fillStyle = r.badge.color;
+  ctx.font = "700 36px 'Noto Sans KR', sans-serif";
+  ctx.fillText(r.badge.text, W / 2, 418);
+
+  ctx.fillStyle = '#f4f0ff';
+  ctx.font = "700 62px 'Noto Serif KR', serif";
+  const titleLines = wrapText(ctx, r.title, W / 2, 510, W - 180, 78);
+
+  ctx.fillStyle = '#9d95b8';
+  ctx.font = "400 29px 'Noto Sans KR', sans-serif";
+  wrapText(ctx, r.subtitle, W / 2, 520 + titleLines * 78, W - 220, 44);
+
+  // 점수 바
+  const barColors = { A: '#e8a0bf', V: '#a78bfa', S: '#fcd34d', F: '#60a5fa' };
+  const barLabels = { A: '불안 애착', V: '회피 애착', S: '안정 애착', F: '혼란 애착' };
+  const bx = 130, bw = W - 260;
+  let by = 800;
+  ['S', 'A', 'V', 'F'].forEach(t => {
+    const pct = Math.round((lastScore[t] / totalPoints) * 100);
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#cbc4e0';
+    ctx.font = "500 28px 'Noto Sans KR', sans-serif";
+    ctx.fillText(barLabels[t], bx, by - 16);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = '#f4f0ff';
+    ctx.font = "700 28px 'Noto Sans KR', sans-serif";
+    ctx.fillText(pct + '%', bx + bw, by - 16);
+    roundRect(ctx, bx, by, bw, 18, 9);
+    ctx.fillStyle = '#231f36';
+    ctx.fill();
+    if (pct > 0) {
+      roundRect(ctx, bx, by, Math.max(18, bw * pct / 100), 18, 9);
+      ctx.fillStyle = barColors[t];
+      ctx.fill();
+    }
+    by += 96;
+  });
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#6b6385';
+  ctx.font = "400 26px 'Noto Sans KR', sans-serif";
+  ctx.fillText('나의 애착 유형 테스트 · 연애 심리 분석', W / 2, H - 80);
+
+  cv.toBlob(blob => {
+    if (!blob) return;
+    const fileName = 'my-attachment-type.png';
+    const file = new File([blob], fileName, { type: 'image/png' });
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      navigator.share({ files: [file], title: '나의 애착 유형' }).catch(() => {});
+    } else {
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+    }
+  }, 'image/png');
+
+  gtag('event', 'save_image', { content_type: 'attachment_test' });
+}
+
+// ── 공유 ──
+function shareKakao() {
+  if (!window.Kakao) return;
+  if (!Kakao.isInitialized()) Kakao.init('5891618b5bd41967c6c1c2c7eddd1a20');
+
+  const typeMap = {
+    A: { title: '💗 불안 애착형', desc: '사랑에 목마른 당신 — 확인하고 싶고, 불안하고, 매달리는 경향이 있어요.' },
+    V: { title: '🧊 회피 애착형', desc: '혼자가 편한 당신 — 가까워지는 게 불편하고 독립이 중요해요.' },
+    S: { title: '☀️ 안정 애착형', desc: '사랑을 편안하게 나누는 당신 — 건강한 관계를 만드는 법을 알고 있어요!' },
+    F: { title: '🌀 혼란 애착형', desc: '가까워지고 싶지만 두려운 당신 — 사랑과 두려움이 공존해요.' },
+  };
+  const r = lastDominant || new URLSearchParams(window.location.search).get('result') || 'S';
+  const t = typeMap[r] || typeMap['S'];
+
+  Kakao.Share.sendDefault({
+    objectType: 'feed',
+    content: {
+      title: `나의 애착 유형: ${t.title}`,
+      description: t.desc,
+      imageUrl: 'https://frabjous-dusk-9711f2.netlify.app/og-attachment.png',
+      link: { mobileWebUrl: window.location.href, webUrl: window.location.href }
+    },
+    buttons: [{
+      title: '나도 테스트하기',
+      link: { mobileWebUrl: window.location.origin + window.location.pathname, webUrl: window.location.origin + window.location.pathname }
+    }]
+  });
+  gtag('event', 'share', { method: 'kakao', content_type: 'attachment_test' });
+}
+
+function copyLink() {
+  navigator.clipboard.writeText(window.location.href).then(() => {
+    alert('링크가 복사되었습니다! 친구에게 공유해보세요 😊');
+    gtag('event', 'share', { method: 'copy_link', content_type: 'attachment_test' });
+  }).catch(() => {
+    prompt('아래 링크를 복사해서 공유하세요', window.location.href);
+  });
+}
+
+function shareTwitter() {
+  const r = lastDominant || new URLSearchParams(window.location.search).get('result') || '';
+  const typeLabel = { A: '💗불안 애착형', V: '🧊회피 애착형', S: '☀️안정 애착형', F: '🌀혼란 애착형' };
+  const label = typeLabel[r] || '나의 애착 유형';
+  const text = encodeURIComponent(`나의 애착 유형 테스트 결과: ${label}\n연애 심리가 궁금하다면 테스트해보세요! #애착유형 #연애심리`);
+  const url = encodeURIComponent(window.location.href);
+  window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank');
+  gtag('event', 'share', { method: 'twitter', content_type: 'attachment_test' });
+}
+
+// 결과 직접 접근(?result=) 처리
+window.addEventListener('DOMContentLoaded', () => {
+  const r = new URLSearchParams(window.location.search).get('result');
+  if (r && results[r]) {
+    answers = questions.map(q => {
+      const idx = q.options.findIndex(o => o.type === r);
+      return idx >= 0 ? idx : 0;
+    });
+    document.getElementById('intro-screen').style.display = 'none';
+    showResult();
+  }
+});
+</script>
+</body>
+</html>
