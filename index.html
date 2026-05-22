@@ -385,12 +385,12 @@
     }
     .question-num {
       font-family: var(--font-en);
-      font-size: 18px;
+      font-size: 23px;
       font-weight: 600;
       font-style: italic;
-      letter-spacing: 0.05em;
-      color: var(--coral);
-      margin-bottom: 13px;
+      letter-spacing: 0.04em;
+      color: var(--rose);
+      margin-bottom: 14px;
     }
     .rev-hint {
       display: none;
@@ -909,7 +909,7 @@
         <button class="share-btn" onclick="copyLink()">🔗 링크 복사</button>
         <button class="share-btn" onclick="shareTwitter()">𝕏 공유</button>
       </div>
-      <button class="retry-btn" onclick="retryQuiz()">↺ 다시 테스트하기</button>
+      <button class="retry-btn" onclick="retryQuiz()">↺ 나의 애착 유형 다시 테스트하기</button>
       <div class="result-foot">
         Made by <a href="https://twitter.com/Jamespaakstore" target="_blank" rel="noopener">@Jamespaakstore</a>
       </div>
@@ -2027,17 +2027,38 @@ async function saveFourCards() {
 }
 
 // ════════ 공유 ════════
-function shareKakao() {
+async function shareKakao() {
   if (!window.Kakao) return;
-  if (!Kakao.isInitialized()) Kakao.init('5891618b5bd41967c6c1c2c7eddd1a20');
+  if (!Kakao.isInitialized()) Kakao.init('5a4185c8ddea74040d7fda9e7be6b511');
   const r = lastDominant || new URLSearchParams(window.location.search).get('result') || 'S';
   const res = results[r] || results['S'];
+
+  // 결과 카드 이미지를 canvas로 만들어 카카오 서버에 업로드 → 공유 메시지에 첨부
+  let imageUrl = 'https://attachment-test-206.netlify.app/og-image.png';
+  let imageWidth = 1200, imageHeight = 630;
+  if (lastDominant && lastScore && Kakao.Share && Kakao.Share.uploadImage) {
+    try {
+      await document.fonts.ready;
+      const cv = newCanvas();
+      drawMainCard(cv.getContext('2d'));
+      const blob = await canvasBlob(cv);
+      if (blob) {
+        const file = new File([blob], 'attachment-result.png', { type: 'image/png' });
+        const up = await Kakao.Share.uploadImage({ file: [file] });
+        const url = up && up.infos && up.infos.original && up.infos.original.url;
+        if (url) { imageUrl = url; imageWidth = 1080; imageHeight = 1920; }
+      }
+    } catch (e) { /* 업로드 실패 시 기본 OG 이미지로 폴백 */ }
+  }
+
   Kakao.Share.sendDefault({
     objectType: 'feed',
     content: {
       title: `나의 애착 유형: ${res.badge.text}`,
       description: res.subtitle,
-      imageUrl: 'https://frabjous-dusk-9711f2.netlify.app/og-attachment.png',
+      imageUrl: imageUrl,
+      imageWidth: imageWidth,
+      imageHeight: imageHeight,
       link: { mobileWebUrl: window.location.href, webUrl: window.location.href }
     },
     buttons: [{
