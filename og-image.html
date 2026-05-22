@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,500;1,600&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    width: 1200px;
+    height: 630px;
+    overflow: hidden;
+    background: #FDF6EC;
+    font-family: 'Pretendard', sans-serif;
+    color: #2D1B14;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  body::before {
+    content: '';
+    position: absolute;
+    top: -32%; right: -12%;
+    width: 56%; height: 130%;
+    background: radial-gradient(circle, rgba(232,146,122,0.32) 0%, transparent 64%);
+  }
+  body::after {
+    content: '';
+    position: absolute;
+    bottom: -36%; left: -12%;
+    width: 56%; height: 130%;
+    background: radial-gradient(circle, rgba(212,97,122,0.26) 0%, transparent 64%);
+  }
+  .inner { position: relative; z-index: 1; text-align: center; }
+  .label {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-weight: 600;
+    font-size: 31px;
+    letter-spacing: 0.16em;
+    color: #D4617A;
+    margin-bottom: 22px;
+  }
+  .title {
+    font-size: 76px;
+    font-weight: 800;
+    letter-spacing: -0.035em;
+    line-height: 1.2;
+    margin-bottom: 30px;
+  }
+  .chips {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 28px;
+  }
+  .chip {
+    background: #fff;
+    border: 1px solid #EEE3D2;
+    border-radius: 100px;
+    padding: 12px 24px;
+    font-size: 22px;
+    font-weight: 500;
+    color: #6B5A50;
+    box-shadow: 0 8px 22px rgba(45,27,20,0.06);
+  }
+  .sub {
+    font-size: 28px;
+    color: #6B5A50;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+  }
+  .url {
+    position: absolute;
+    bottom: 44px;
+    left: 0; right: 0;
+    text-align: center;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 26px;
+    color: #B6A597;
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+  <div class="inner">
+    <div class="label">Attachment Style Test</div>
+    <h1 class="title">나의 애착 유형 테스트 💗</h1>
+    <div class="chips">
+      <span class="chip">💗 불안형</span>
+      <span class="chip">🧊 회피형</span>
+      <span class="chip">☀️ 안정형</span>
+      <span class="chip">🌀 혼란형</span>
+    </div>
+    <p class="sub">불안형? 회피형? 안정형? 혼란형?</p>
+  </div>
+  <div class="url">attachment-test-206.netlify.app</div>
+</body>
+</html>

@@ -6,8 +6,16 @@
   <title>나의 애착 유형 테스트 | 연애 심리를 알아보세요</title>
   <meta name="description" content="존 볼비·메리 에인스워스의 애착 이론 기반. 내 상황에 맞춘 24문항으로 불안·회피·안정·혼란 애착 유형과 궁합을 알아보세요." />
   <meta property="og:title" content="나의 애착 유형 테스트" />
-  <meta property="og:description" content="내 상황에 맞춘 질문으로 애착 유형과 궁합까지. 불안형? 회피형? 안정형?" />
+  <meta property="og:description" content="내 상황에 맞춘 질문으로 애착 유형과 궁합까지. 불안형? 회피형?" />
   <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://attachment-test-206.netlify.app/" />
+  <meta property="og:image" content="https://attachment-test-206.netlify.app/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="나의 애착 유형 테스트" />
+  <meta name="twitter:description" content="내 상황에 맞춘 질문으로 애착 유형과 궁합까지. 불안형? 회피형?" />
+  <meta name="twitter:image" content="https://attachment-test-206.netlify.app/og-image.png" />
 
   <!-- Fonts: Pretendard(한글) + Cormorant Garamond(영문 포인트) -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
@@ -118,8 +126,9 @@
     #heart-fill { transition: y 0.45s cubic-bezier(.4,0,.2,1), height 0.45s cubic-bezier(.4,0,.2,1); }
     .progress-count {
       font-family: var(--font-en);
-      font-size: 19px;
+      font-size: 20px;
       font-weight: 600;
+      font-style: italic;
       color: var(--rose-deep);
       letter-spacing: 0.03em;
     }
@@ -127,8 +136,9 @@
     .progress-pct {
       margin-left: auto;
       font-family: var(--font-en);
-      font-size: 16px;
-      font-weight: 500;
+      font-size: 17px;
+      font-weight: 600;
+      font-style: italic;
       color: var(--text-mute);
     }
 
@@ -525,29 +535,8 @@
       padding: 0 8px;
     }
 
-    .swipe-hint {
-      text-align: center;
-      font-family: var(--font-en);
-      font-size: 13px;
-      font-style: italic;
-      color: var(--text-mute);
-      margin-bottom: 12px;
-      letter-spacing: 0.04em;
-    }
-    .result-carousel {
-      display: flex;
-      gap: 14px;
-      overflow-x: auto;
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-      padding: 4px 7%;
-      margin: 0 -24px;
-      scrollbar-width: none;
-    }
-    .result-carousel::-webkit-scrollbar { display: none; }
+    .result-cards { display: flex; flex-direction: column; gap: 14px; }
     .rcard {
-      flex: 0 0 86%;
-      scroll-snap-align: center;
       background: var(--card);
       border-radius: var(--radius);
       padding: 30px 26px;
@@ -563,22 +552,43 @@
     }
     .rcard-body { font-size: 14px; line-height: 2.05; color: var(--text-soft); }
 
-    .carousel-dots {
+    /* 저장 옵션 팝업 */
+    .save-opt {
       display: flex;
-      justify-content: center;
-      gap: 7px;
-      margin-top: 18px;
-    }
-    .cdot {
-      width: 7px; height: 7px;
-      border-radius: 50%;
-      background: var(--line);
-      border: none;
-      padding: 0;
+      align-items: center;
+      gap: 13px;
+      width: 100%;
+      padding: 16px 16px;
+      background: #fff;
+      border: 1.5px solid var(--line);
+      border-radius: var(--radius-sm);
       cursor: pointer;
-      transition: background 0.2s, transform 0.2s;
+      text-align: left;
+      margin-bottom: 10px;
+      font-family: var(--font);
+      transition: border-color 0.16s, transform 0.12s;
     }
-    .cdot.active { background: var(--rose); transform: scale(1.35); }
+    .save-opt:active { transform: scale(0.99); }
+    .save-opt-emoji {
+      flex-shrink: 0;
+      width: 46px; height: 46px;
+      border-radius: 14px;
+      background: var(--bg2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 23px;
+    }
+    .save-opt-text { display: flex; flex-direction: column; gap: 3px; }
+    .save-opt-text b { font-size: 14.5px; font-weight: 700; color: var(--text); }
+    .save-opt-text small { font-size: 12px; color: var(--text-mute); line-height: 1.5; }
+    .popup-cancel {
+      margin-top: 4px;
+      background: transparent;
+      border: none;
+      color: var(--text-mute);
+      font-size: 13px;
+      font-family: var(--font);
+      cursor: pointer;
+    }
 
     .score-row { margin-bottom: 15px; }
     .score-row:last-child { margin-bottom: 0; }
@@ -705,13 +715,13 @@
       .option-btn:hover { border-color: var(--rose); }
       .nav-btn:hover:not(:disabled) { border-color: var(--rose); }
       .share-btn:hover { border-color: var(--rose); }
+      .save-opt:hover { border-color: var(--rose); }
       .retry-btn:hover { border-color: var(--rose); }
       .intro-footer a:hover, .result-foot a:hover { color: var(--rose-deep); }
     }
 
     @media (max-width: 480px) {
       .container { padding: 0 20px; }
-      .result-carousel { margin: 0 -20px; }
       .question-card { padding: 32px 22px; }
       .rcard { padding: 26px 21px; }
       .info-row { gap: 16px; }
@@ -794,6 +804,30 @@
   </div>
 </div>
 
+<!-- ── 이미지 저장 선택 팝업 ── -->
+<div class="popup-overlay" id="save-popup" onclick="if(event.target===this)closeSavePopup()">
+  <div class="popup-card" role="dialog" aria-modal="true">
+    <div class="popup-emoji">📷</div>
+    <h3 class="popup-title">어떻게 저장할까요?</h3>
+    <p class="popup-body" style="margin-bottom:20px;">원하는 방식을 골라주세요.</p>
+    <button class="save-opt" onclick="saveMainCard()">
+      <span class="save-opt-emoji">📱</span>
+      <span class="save-opt-text">
+        <b>대표 카드 1장 저장</b>
+        <small>유형 · 제목 · 점수바를 담은 메인 카드</small>
+      </span>
+    </button>
+    <button class="save-opt" onclick="saveFourCards()">
+      <span class="save-opt-emoji">🗂️</span>
+      <span class="save-opt-text">
+        <b>전체 4장 저장</b>
+        <small>인스타 슬라이드용 · 1080×1920 카드 4장</small>
+      </span>
+    </button>
+    <button class="popup-cancel" onclick="closeSavePopup()">닫기</button>
+  </div>
+</div>
+
 <!-- ── 관계 유형 선택 ── -->
 <div id="select-screen">
   <div class="container">
@@ -862,9 +896,7 @@
       <p class="result-subtitle" id="result-subtitle">부제목</p>
     </div>
 
-    <p class="swipe-hint">← swipe →</p>
-    <div class="result-carousel" id="carousel"></div>
-    <div class="carousel-dots" id="carousel-dots"></div>
+    <div class="result-cards" id="result-cards"></div>
 
     <div class="share-section">
       <p class="share-title">친구에게 공유하고 유형 비교해보기</p>
@@ -873,7 +905,7 @@
           <img src="https://developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_small.png" width="17" height="17" alt="kakao" />
           카카오톡
         </button>
-        <button class="share-btn save-btn" onclick="saveResultImage()">📷 이미지 저장</button>
+        <button class="share-btn save-btn" onclick="openSavePopup()">📷 이미지 저장</button>
         <button class="share-btn" onclick="copyLink()">🔗 링크 복사</button>
         <button class="share-btn" onclick="shareTwitter()">𝕏 공유</button>
       </div>
@@ -1664,12 +1696,8 @@ function renderResult(dominant, score) {
     { title: '💞 애착 유형 궁합', body: compatHtml },
     { title: '✨ 더 건강한 관계를 위한 작은 연습', body: `<ul class="tip-list">${r.tips.map(t => `<li>${escapeHTML(t)}</li>`).join('')}</ul>` },
   ];
-  const carousel = document.getElementById('carousel');
-  carousel.innerHTML = cards.map(c =>
+  document.getElementById('result-cards').innerHTML = cards.map(c =>
     `<div class="rcard"><div class="rcard-title">${c.title}</div>${c.body}</div>`).join('');
-  document.getElementById('carousel-dots').innerHTML = cards.map((_, i) =>
-    `<button class="cdot${i === 0 ? ' active' : ''}" onclick="scrollToCard(${i})" aria-label="카드 ${i + 1}"></button>`).join('');
-  carousel.scrollLeft = 0;
 
   document.getElementById('intro-screen').style.display = 'none';
   document.getElementById('select-screen').style.display = 'none';
@@ -1682,20 +1710,6 @@ function renderResult(dominant, score) {
     });
   });
 }
-
-function carouselStep() {
-  const c = document.getElementById('carousel');
-  const first = c.querySelector('.rcard');
-  return first ? first.offsetWidth + 14 : 1;
-}
-function scrollToCard(i) {
-  document.getElementById('carousel').scrollTo({ left: i * carouselStep(), behavior: 'smooth' });
-}
-document.getElementById('carousel').addEventListener('scroll', () => {
-  const c = document.getElementById('carousel');
-  const idx = Math.round(c.scrollLeft / carouselStep());
-  document.querySelectorAll('.cdot').forEach((d, i) => d.classList.toggle('active', i === idx));
-});
 
 function retryQuiz() {
   clearTimeout(autoTimer);
@@ -1739,127 +1753,277 @@ function wrapText(ctx, text, cx, y, maxW, lh) {
   return lines.length;
 }
 
-async function saveResultImage() {
+// ── 저장 옵션 팝업 ──
+function openSavePopup() {
   if (!lastDominant || !lastScore) return;
-  const r = results[lastDominant];
-  const W = 1080, H = 1920;
+  document.getElementById('save-popup').classList.add('show');
+}
+function closeSavePopup() {
+  document.getElementById('save-popup').classList.remove('show');
+}
+
+// ── 캔버스 공통 (1080x1920) ──
+const CW = 1080, CH = 1920;
+function newCanvas() {
   const cv = document.createElement('canvas');
-  cv.width = W; cv.height = H;
-  const ctx = cv.getContext('2d');
-  try { await document.fonts.ready; } catch (e) {}
-
+  cv.width = CW; cv.height = CH;
+  return cv;
+}
+function paintBase(ctx) {
   ctx.fillStyle = '#FDF6EC';
-  ctx.fillRect(0, 0, W, H);
-  let g = ctx.createRadialGradient(W * 0.85, H * 0.06, 0, W * 0.85, H * 0.06, W * 0.8);
+  ctx.fillRect(0, 0, CW, CH);
+  let g = ctx.createRadialGradient(CW * 0.85, CH * 0.06, 0, CW * 0.85, CH * 0.06, CW * 0.9);
   g.addColorStop(0, 'rgba(232,146,122,0.26)'); g.addColorStop(1, 'rgba(232,146,122,0)');
-  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-  g = ctx.createRadialGradient(W * 0.12, H * 0.96, 0, W * 0.12, H * 0.96, W * 0.8);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, CW, CH);
+  g = ctx.createRadialGradient(CW * 0.13, CH * 0.95, 0, CW * 0.13, CH * 0.95, CW * 0.9);
   g.addColorStop(0, 'rgba(212,97,122,0.20)'); g.addColorStop(1, 'rgba(212,97,122,0)');
-  ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
-
+  ctx.fillStyle = g; ctx.fillRect(0, 0, CW, CH);
   ctx.save();
-  ctx.shadowColor = 'rgba(45,27,20,0.16)';
-  ctx.shadowBlur = 60;
-  ctx.shadowOffsetY = 24;
+  ctx.shadowColor = 'rgba(45,27,20,0.15)';
+  ctx.shadowBlur = 70; ctx.shadowOffsetY = 26;
   ctx.fillStyle = '#FFFFFF';
-  roundRect(ctx, 64, 104, W - 128, H - 208, 56);
+  roundRect(ctx, 60, 100, CW - 120, CH - 200, 58);
   ctx.fill();
   ctx.restore();
-
+}
+function drawTopLabel(ctx) {
   ctx.textAlign = 'center';
-
   ctx.fillStyle = '#D4617A';
-  ctx.font = "italic 600 32px 'Cormorant Garamond', serif";
-  ctx.fillText('Attachment Style Test', W / 2, 244);
-
+  ctx.font = "italic 600 31px 'Cormorant Garamond', serif";
+  ctx.fillText('Attachment Style Test', CW / 2, 224);
   if (relationshipKey && relationshipLabels[relationshipKey]) {
     ctx.fillStyle = '#AB9C8F';
-    ctx.font = "400 27px 'Pretendard', sans-serif";
-    ctx.fillText(relationshipLabels[relationshipKey], W / 2, 300);
+    ctx.font = "400 26px 'Pretendard', sans-serif";
+    ctx.fillText(relationshipLabels[relationshipKey], CW / 2, 276);
   }
-
-  ctx.font = "150px sans-serif";
-  ctx.fillText(r.emoji, W / 2, 518);
-
-  const badgeW = 372, badgeH = 72;
-  roundRect(ctx, (W - badgeW) / 2, 560, badgeW, badgeH, 36);
-  ctx.fillStyle = r.badge.bg;
-  ctx.fill();
+}
+function drawBadge(ctx, r, centerY) {
+  const bw = 388, bh = 78;
+  roundRect(ctx, (CW - bw) / 2, centerY - bh / 2, bw, bh, 39);
+  ctx.fillStyle = r.badge.bg; ctx.fill();
+  ctx.textAlign = 'center';
   ctx.fillStyle = r.badge.color;
-  ctx.font = "600 33px 'Pretendard', sans-serif";
-  ctx.fillText(r.badge.text, W / 2, 607);
-
-  ctx.fillStyle = '#2D1B14';
-  ctx.font = "700 60px 'Pretendard', sans-serif";
-  const tLines = wrapText(ctx, r.title, W / 2, 718, W - 260, 80);
-
-  ctx.fillStyle = '#6B5A50';
-  ctx.font = "400 30px 'Pretendard', sans-serif";
-  wrapText(ctx, r.subtitle, W / 2, 742 + tLines * 80, W - 300, 46);
-
-  ctx.strokeStyle = '#EEE3D2';
-  ctx.lineWidth = 2;
-  ctx.beginPath();
-  ctx.moveTo(190, 1010);
-  ctx.lineTo(W - 190, 1010);
-  ctx.stroke();
-
-  const bx = 170, bw = W - 340;
-  let by = 1124;
+  ctx.font = "600 35px 'Pretendard', sans-serif";
+  ctx.fillText(r.badge.text, CW / 2, centerY + 13);
+}
+function drawScoreBars(ctx, y, big) {
+  const bx = big ? 152 : 168;
+  const bw = CW - bx * 2;
+  const h = big ? 26 : 20;
+  const step = big ? 168 : 106;
   ['S', 'A', 'V', 'F'].forEach(t => {
     const pct = Math.round((lastScore[t] / totalPoints) * 100);
     ctx.textAlign = 'left';
     ctx.fillStyle = '#6B5A50';
-    ctx.font = "500 30px 'Pretendard', sans-serif";
-    ctx.fillText(typeEmoji[t] + ' ' + typeName[t], bx, by - 18);
+    ctx.font = (big ? '500 34px' : '500 30px') + " 'Pretendard', sans-serif";
+    ctx.fillText(typeEmoji[t] + ' ' + typeName[t], bx, y - 20);
     ctx.textAlign = 'right';
     ctx.fillStyle = '#2D1B14';
-    ctx.font = "600 34px 'Cormorant Garamond', serif";
-    ctx.fillText(pct + '%', bx + bw, by - 16);
-    roundRect(ctx, bx, by, bw, 20, 10);
-    ctx.fillStyle = '#F4EADA';
-    ctx.fill();
+    ctx.font = "italic 600 " + (big ? '40px' : '34px') + " 'Cormorant Garamond', serif";
+    ctx.fillText(pct + '%', bx + bw, y - 18);
+    roundRect(ctx, bx, y, bw, h, h / 2);
+    ctx.fillStyle = '#F4EADA'; ctx.fill();
     if (pct > 0) {
-      roundRect(ctx, bx, by, Math.max(20, bw * pct / 100), 20, 10);
-      ctx.fillStyle = typeColor[t];
-      ctx.fill();
+      roundRect(ctx, bx, y, Math.max(h, bw * pct / 100), h, h / 2);
+      ctx.fillStyle = typeColor[t]; ctx.fill();
     }
-    by += 110;
+    y += step;
   });
-
+  return y;
+}
+// 중앙 정렬 푸터 — 텍스트 크기 밸런스 통일
+function drawFooter(ctx, withMadeBy) {
   ctx.textAlign = 'center';
+  ctx.fillStyle = '#2D1B14';
+  ctx.font = "700 32px 'Pretendard', sans-serif";
+  ctx.fillText('나의 애착 유형 테스트', CW / 2, CH - 176);
+  if (withMadeBy) {
+    ctx.fillStyle = '#AB9C8F';
+    ctx.font = "italic 600 29px 'Cormorant Garamond', serif";
+    ctx.fillText('Made by @Jamespaakstore', CW / 2, CH - 128);
+  }
+}
+function drawPageNum(ctx, n) {
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#C9BBAC';
+  ctx.font = "italic 600 27px 'Cormorant Garamond', serif";
+  ctx.fillText('0' + n + ' / 04', CW / 2, CH - 150);
+}
+function countLines(ctx, text, maxW) {
+  const words = text.split(' ');
+  let line = '', n = 0;
+  words.forEach(w => {
+    const t = line ? line + ' ' + w : w;
+    if (ctx.measureText(t).width > maxW && line) { n++; line = w; }
+    else line = t;
+  });
+  if (line) n++;
+  return n;
+}
+function drawCompatBlock(ctx, y, label, t, sc, reason, bg, labelColor) {
+  const px = 150, pad = 44, innerW = CW - 300 - pad * 2;
+  ctx.font = "400 27px 'Pretendard', sans-serif";
+  const rLines = countLines(ctx, reason, innerW);
+  const blockH = 196 + rLines * 40;
+  roundRect(ctx, px, y, CW - 300, blockH, 32);
+  ctx.fillStyle = bg; ctx.fill();
+  ctx.textAlign = 'left';
+  ctx.fillStyle = labelColor;
+  ctx.font = "700 23px 'Pretendard', sans-serif";
+  ctx.fillText(label, px + pad, y + 56);
+  ctx.fillStyle = '#2D1B14';
+  ctx.font = "700 38px 'Pretendard', sans-serif";
+  ctx.fillText(typeEmoji[t] + ' ' + typeName[t], px + pad, y + 112);
+  ctx.font = "26px sans-serif";
+  ctx.fillText(hearts(sc), px + pad, y + 160);
+  ctx.fillStyle = '#6B5A50';
+  ctx.font = "400 27px 'Pretendard', sans-serif";
+  wrapText(ctx, reason, px + pad, y + 212, innerW, 40);
+  return y + blockH;
+}
+
+// ── 카드 렌더러 ──
+function drawMainCard(ctx) {
+  const r = results[lastDominant];
+  paintBase(ctx);
+  drawTopLabel(ctx);
+  ctx.textAlign = 'center';
+  ctx.font = "146px sans-serif";
+  ctx.fillText(r.emoji, CW / 2, 488);
+  drawBadge(ctx, r, 576);
+  ctx.fillStyle = '#2D1B14';
+  ctx.font = "700 58px 'Pretendard', sans-serif";
+  const tl = wrapText(ctx, r.title, CW / 2, 694, CW - 280, 76);
+  ctx.fillStyle = '#6B5A50';
+  ctx.font = "400 29px 'Pretendard', sans-serif";
+  let y = 712 + tl * 76;
+  y += wrapText(ctx, r.subtitle, CW / 2, y, CW - 320, 44) * 44;
+  y += 28;
+  ctx.strokeStyle = '#EEE3D2'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(210, y); ctx.lineTo(CW - 210, y); ctx.stroke();
+  y += 96;
+  y = drawScoreBars(ctx, y, false);
   const bm = bestMatch(lastDominant);
   ctx.fillStyle = '#FBF1DC';
-  roundRect(ctx, 170, by + 8, W - 340, 98, 28);
-  ctx.fill();
+  roundRect(ctx, 168, y + 2, CW - 336, 98, 28); ctx.fill();
+  ctx.textAlign = 'center';
   ctx.fillStyle = '#B07C2A';
   ctx.font = "500 30px 'Pretendard', sans-serif";
-  ctx.fillText(`잘 맞는 유형  ${typeEmoji[bm]} ${typeName[bm]}`, W / 2, by + 70);
-
+  ctx.fillText('잘 맞는 유형  ' + typeEmoji[bm] + ' ' + typeName[bm], CW / 2, y + 64);
+  drawFooter(ctx, true);
+}
+function drawSlide1(ctx) {
+  const r = results[lastDominant];
+  paintBase(ctx);
+  drawTopLabel(ctx);
+  ctx.textAlign = 'center';
+  ctx.font = "200px sans-serif";
+  ctx.fillText(r.emoji, CW / 2, 624);
+  drawBadge(ctx, r, 744);
   ctx.fillStyle = '#2D1B14';
-  ctx.font = "700 33px 'Pretendard', sans-serif";
-  ctx.fillText('나의 애착 유형 테스트', W / 2, H - 228);
-  ctx.fillStyle = '#AB9C8F';
-  ctx.font = "italic 600 30px 'Cormorant Garamond', serif";
-  ctx.fillText('Made by @Jamespaakstore', W / 2, H - 180);
+  ctx.font = "700 70px 'Pretendard', sans-serif";
+  const tl = wrapText(ctx, r.title, CW / 2, 906, CW - 240, 92);
+  ctx.fillStyle = '#6B5A50';
+  ctx.font = "400 33px 'Pretendard', sans-serif";
+  wrapText(ctx, r.subtitle, CW / 2, 948 + tl * 92, CW - 300, 50);
+  drawPageNum(ctx, 1);
+}
+function drawSlide2(ctx) {
+  paintBase(ctx);
+  drawTopLabel(ctx);
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#2D1B14';
+  ctx.font = "700 54px 'Pretendard', sans-serif";
+  ctx.fillText('나의 애착 유형 분포', CW / 2, 432);
+  ctx.fillStyle = '#6B5A50';
+  ctx.font = "400 28px 'Pretendard', sans-serif";
+  ctx.fillText('네 가지 마음이 내 안에 이만큼씩 있어요', CW / 2, 492);
+  drawScoreBars(ctx, 700, true);
+  drawPageNum(ctx, 2);
+}
+function drawSlide3(ctx) {
+  const dom = lastDominant;
+  paintBase(ctx);
+  drawTopLabel(ctx);
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#2D1B14';
+  ctx.font = "700 54px 'Pretendard', sans-serif";
+  ctx.fillText('애착 유형 궁합', CW / 2, 408);
+  const best = bestMatch(dom), worst = worstMatch(dom);
+  let y = 500;
+  y = drawCompatBlock(ctx, y, '가장 잘 맞는 유형', best, compatScore[dom][best], compatReason[dom].best, '#FBF1DC', '#B07C2A');
+  y += 28;
+  drawCompatBlock(ctx, y, '조심해야 할 유형', worst, compatScore[dom][worst], compatReason[dom].worst, '#FBEBEF', '#BD5069');
+  drawPageNum(ctx, 3);
+}
+function drawSlide4(ctx) {
+  const r = results[lastDominant];
+  paintBase(ctx);
+  drawTopLabel(ctx);
+  ctx.textAlign = 'center';
+  ctx.font = "92px sans-serif";
+  ctx.fillText(r.emoji, CW / 2, 392);
+  ctx.fillStyle = '#2D1B14';
+  ctx.font = "700 44px 'Pretendard', sans-serif";
+  wrapText(ctx, r.title, CW / 2, 468, CW - 280, 56);
+  ctx.fillStyle = '#D4617A';
+  ctx.font = "700 23px 'Pretendard', sans-serif";
+  ctx.fillText('마음 들여다보기', CW / 2, 566);
+  ctx.textAlign = 'left';
+  ctx.fillStyle = '#6B5A50';
+  ctx.font = "400 31px 'Pretendard', sans-serif";
+  wrapText(ctx, r.desc, 150, 640, CW - 300, 54);
+  drawFooter(ctx, true);
+}
 
-  cv.toBlob(blob => {
-    if (!blob) return;
-    const fileName = 'my-attachment-type.png';
-    const file = new File([blob], fileName, { type: 'image/png' });
-    if (navigator.canShare && navigator.canShare({ files: [file] })) {
-      navigator.share({ files: [file], title: '나의 애착 유형' }).catch(() => {});
-    } else {
-      const a = document.createElement('a');
-      a.href = URL.createObjectURL(blob);
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      setTimeout(() => URL.revokeObjectURL(a.href), 1500);
-    }
-  }, 'image/png');
-  gtag('event', 'save_image', { content_type: 'attachment_test' });
+// ── 저장 실행 ──
+function canvasBlob(cv) {
+  return new Promise(res => cv.toBlob(res, 'image/png'));
+}
+function downloadBlob(blob, name) {
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 2500);
+}
+async function saveMainCard() {
+  closeSavePopup();
+  if (!lastDominant || !lastScore) return;
+  try { await document.fonts.ready; } catch (e) {}
+  const cv = newCanvas();
+  drawMainCard(cv.getContext('2d'));
+  const blob = await canvasBlob(cv);
+  if (!blob) return;
+  const file = new File([blob], 'attachment-result.png', { type: 'image/png' });
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    navigator.share({ files: [file], title: '나의 애착 유형' }).catch(() => {});
+  } else {
+    downloadBlob(blob, 'attachment-result.png');
+  }
+  gtag('event', 'save_image', { content_type: 'attachment_test', variant: 'main' });
+}
+async function saveFourCards() {
+  closeSavePopup();
+  if (!lastDominant || !lastScore) return;
+  try { await document.fonts.ready; } catch (e) {}
+  const drawers = [drawSlide1, drawSlide2, drawSlide3, drawSlide4];
+  const blobs = [];
+  for (let i = 0; i < 4; i++) {
+    const cv = newCanvas();
+    drawers[i](cv.getContext('2d'));
+    blobs.push(await canvasBlob(cv));
+  }
+  if (blobs.some(b => !b)) return;
+  const files = blobs.map((b, i) => new File([b], `attachment-result-${i + 1}.png`, { type: 'image/png' }));
+  if (navigator.canShare && navigator.canShare({ files })) {
+    navigator.share({ files, title: '나의 애착 유형 (4장)' }).catch(() => {});
+  } else {
+    files.forEach((f, i) => setTimeout(() => downloadBlob(blobs[i], f.name), i * 400));
+  }
+  gtag('event', 'save_image', { content_type: 'attachment_test', variant: 'four' });
 }
 
 // ════════ 공유 ════════
