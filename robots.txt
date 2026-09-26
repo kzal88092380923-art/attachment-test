@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://attachment.superstarkzal.com/sitemap.xml

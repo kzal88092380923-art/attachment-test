@@ -8,14 +8,15 @@
   <meta property="og:title" content="나의 애착 유형 테스트" />
   <meta property="og:description" content="내 상황에 맞춘 질문으로 애착 유형과 궁합까지. 불안형? 회피형?" />
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://attachment-test-206.netlify.app/" />
-  <meta property="og:image" content="https://attachment-test-206.netlify.app/og-image.png" />
+  <meta property="og:url" content="https://attachment.superstarkzal.com/" />
+  <meta property="og:image" content="https://attachment.superstarkzal.com/og-image.png" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="나의 애착 유형 테스트" />
   <meta name="twitter:description" content="내 상황에 맞춘 질문으로 애착 유형과 궁합까지. 불안형? 회피형?" />
-  <meta name="twitter:image" content="https://attachment-test-206.netlify.app/og-image.png" />
+  <meta name="twitter:image" content="https://attachment.superstarkzal.com/og-image.png" />
+  <link rel="canonical" href="https://attachment.superstarkzal.com/" />
 
   <!-- Fonts: Pretendard(한글) + Cormorant Garamond(영문 포인트) -->
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" />
@@ -2034,7 +2035,7 @@ async function shareKakao() {
   const res = results[r] || results['S'];
 
   // 결과 카드 이미지를 canvas로 만들어 카카오 서버에 업로드 → 공유 메시지에 첨부
-  let imageUrl = 'https://attachment-test-206.netlify.app/og-image.png';
+  let imageUrl = 'https://attachment.superstarkzal.com/og-image.png';
   let imageWidth = 1200, imageHeight = 630;
   if (lastDominant && lastScore && Kakao.Share && Kakao.Share.uploadImage) {
     try {
